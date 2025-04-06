@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <script type="module" src="./index.js" defer></script>
+    <title>CAESAR CIPHER</title>
+  </head>
+  <body>
+    <div id="root">
+      <div id="topBtns">
+        <button type="button" id="switchBtn">Cipher</button>
+        <button type="button" id="copy">Copy</button>
+        <button type="button" id="clear">Clear</button>
+      </div>
+      <textarea placeholder="Put your text here" id="input"></textarea>
+      <div id="settings">
+        <h2>caesar cipher</h2>
+
+        <div>
+          <label for="encryption">Encryption type:</label>
+          <select name="encryption" id="encryption">
+            <option value="caesar">Caesar Cipher</option>
+            <option value="reverse">Reverse Cipher</option>
+            <option value="transposition">Transposition Cipher</option>
+            <option value="vigenere">Vigenère Cipher</option>
+            <option value="multiplicative">Multiplicative Cipher</option>
+            <option value="affine">Affine Cipher</option>
+          </select>
+        </div>
+
+        <div class="keyContainer" id="keyDiv">
+          <label for="key">KEY:</label>
+          <input type="number" value="1" id="key" />
+        </div>
+
+        <div id="key2Element" class="keyContainer">
+          <label for="key2">KEY2:</label>
+          <input type="number" value="1" id="key2" />
+        </div>
+
+        <button type="button" id="submitBtn">submit</button>
+      </div>
+      <div id="output"></div>
+    </div>
+  </body>
+</html>

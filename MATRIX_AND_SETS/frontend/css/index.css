@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.hero {
+  display: flex;
+  width: 100dvw;
+  height: 100dvh;
+  justify-content: space-around;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero h1 {
+  font-size: 4rem;
+}
+
+.hero p {
+  font-size: 2em;
+}

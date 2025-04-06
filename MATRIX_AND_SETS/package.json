@@ -1,0 +1,16 @@
+{
+  "name": "matrix_and_sets",
+  "version": "1.0.0",
+  "description": "A project I made that is based on matrices and sets",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon -q Matrix.js"
+  },
+  "keywords": [],
+  "author": "ovieta",
+  "license": "ISC",
+  "type": "es6",
+  "devDependencies": {
+    "vitest": "^3.0.8"
+  }
+}

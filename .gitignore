@@ -1,0 +1,9 @@
+.vscode
+node_modules
+package-lock.json
+dist
+coverage
+*.log
+*.env
+*.local
+*.test.js
