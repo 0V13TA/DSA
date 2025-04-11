@@ -1,7 +1,8 @@
 function validateData(arr: any[]) {
 	if (arr.length === 0) return [false, "Array must not be empty"];
-	if (arr.find((value) => typeof value !== "number"))
+	if (arr.find((value) => typeof value !== "number")) {
 		return [false, "Array must contain only integers"];
+	}
 	return [true, ""];
 }
 
@@ -35,7 +36,7 @@ function getMode(arr: number[]) {
 
 	if (!isValid) throw new Error(<string>message);
 
-	const numbObj = {};
+	const numbObj: any = {};
 	const mode: number[] = [];
 	arr.forEach((numb) => {
 		if (numbObj[numb] !== undefined) {
@@ -65,7 +66,7 @@ function table(arr: number[]) {
 
 	if (!isValid) throw new Error(<string>message);
 
-	const numbObj = {};
+	const numbObj: any = {};
 	const fx: number[] = [];
 	arr.forEach((numb) => {
 		if (numbObj[numb] !== undefined) {
