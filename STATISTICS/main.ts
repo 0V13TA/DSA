@@ -1,17 +1,40 @@
+function validateData(arr: any[]) {
+	if (arr.length === 0) return [false, "Array must not be empty"];
+	if (arr.find((value) => typeof value !== "number"))
+		return [false, "Array must contain only integers"];
+	return [true, ""];
+}
+
 function getMedian(arr: number[]) {
-	if (arr.length % 2 === 0) {
-		return arr[arr.length / 2] + arr[arr.length / 2 + 1];
+	const [isValid, message] = validateData(arr);
+
+	if (!isValid) throw new Error(<string>message);
+	const arrangedArr = [...arr].sort((a, b) => a - b);
+
+	if (arrangedArr.length % 2 === 0) {
+		return (
+			arrangedArr[arrangedArr.length / 2] +
+			arrangedArr[arrangedArr.length / 2 + 1]
+		);
 	} else {
-		return arr[Math.floor(arr.length / 2)];
+		return arrangedArr[Math.floor(arrangedArr.length / 2)];
 	}
 }
 
 function getMean(arr: number[]) {
-	const sum = arr.reduce((acc, cur) => acc + cur,0);
+	const [isValid, message] = validateData(arr);
+
+	if (!isValid) throw new Error(<string>message);
+
+	const sum = arr.reduce((acc, cur) => acc + cur, 0);
 	return sum / arr.length;
 }
 
 function getMode(arr: number[]) {
+	const [isValid, message] = validateData(arr);
+
+	if (!isValid) throw new Error(<string>message);
+
 	const numbObj = {};
 	const mode: number[] = [];
 	arr.forEach((numb) => {
@@ -29,9 +52,19 @@ function getMode(arr: number[]) {
 	return mode;
 }
 
-const getRange = (arr: number[]) => Math.max(...arr) - Math.min(...arr);
+function getRange(arr: number[]) {
+	const [isValid, message] = validateData(arr);
+
+	if (!isValid) throw new Error(<string>message);
+
+	return Math.max(...arr) - Math.min(...arr);
+}
 
 function table(arr: number[]) {
+	const [isValid, message] = validateData(arr);
+
+	if (!isValid) throw new Error(<string>message);
+
 	const numbObj = {};
 	const fx: number[] = [];
 	arr.forEach((numb) => {
@@ -52,7 +85,12 @@ function table(arr: number[]) {
 	};
 }
 
-const numbArr = [1, 1, 1, 1, 2, 3];
+const numbArr = [
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2,
+	2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 4, 9, 9, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 8, 8, 8, 8, 8, 2, 2, 3, 3, 9, 9, 9, 3, 3, 4, 5, 5, 5, 5, 5,
+	6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9,
+];
 
 console.log(
 	`The mean of the collection is: ${getMean(numbArr).toPrecision(3)}`
