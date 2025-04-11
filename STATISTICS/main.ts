@@ -43,7 +43,7 @@ function getMode(arr: number[]) {
 			numbObj[numb]++;
 		} else numbObj[numb] = 1;
 	});
-	const values = <number[]>Object.values(numbObj);
+	const values: number[] = Object.values(numbObj);
 	const maxNumb = Math.max(...values);
 
 	Object.keys(numbObj).forEach((numb) => {
@@ -79,11 +79,13 @@ function table(arr: number[]) {
 		fx.push(numb * numbObj[numb]);
 	});
 
-	return {
+	const table: { values: number[]; frequency: number[]; fx: number[] } = {
 		values: numbKeys,
-		frequency: <number[]>Object.values(numbObj),
+		frequency: Object.values(numbObj),
 		fx: fx,
 	};
+
+	return table;
 }
 
 const numbArr = [
