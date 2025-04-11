@@ -7,7 +7,7 @@ function getMedian(arr: number[]) {
 }
 
 function getMean(arr: number[]) {
-	const sum = arr.reduce((acc, cur) => acc + cur);
+	const sum = arr.reduce((acc, cur) => acc + cur,0);
 	return sum / arr.length;
 }
 
