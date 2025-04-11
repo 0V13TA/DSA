@@ -8,7 +8,7 @@ function validateData(arr: number[]): void {
 function calculateFrequency(arr: number[]): Map<number, number> {
 	const frequencyMap = new Map<number, number>();
 	arr.forEach((num) => {
-		frequencyMap.set(num, (frequencyMap.get(num) || 0) + 1);
+		frequencyMap.set(num, (frequencyMap.get(num) ?? 0) + 1);
 	});
 	return frequencyMap;
 }
