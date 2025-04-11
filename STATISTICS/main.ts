@@ -5,6 +5,14 @@ function validateData(arr: number[]): void {
 	}
 }
 
+function calculateFrequency(arr: number[]): Map<number, number> {
+	const frequencyMap = new Map<number, number>();
+	arr.forEach((num) => {
+		frequencyMap.set(num, (frequencyMap.get(num) || 0) + 1);
+	});
+	return frequencyMap;
+}
+
 function getMedian(arr: number[]): number {
 	validateData(arr);
 	const sortedArr = [...arr].sort((a, b) => a - b);
@@ -24,16 +32,11 @@ function getMean(arr: number[]): number {
 }
 
 function getMode(arr: number[]): number[] {
-	validateData(arr);
-	const frequencyMap: Record<number, number> = {};
-	arr.forEach((num) => {
-		frequencyMap[num] = (frequencyMap[num] || 0) + 1;
-	});
-
-	const maxFrequency = Math.max(...Object.values(frequencyMap));
-	return Object.keys(frequencyMap)
-		.filter((key) => frequencyMap[Number(key)] === maxFrequency)
-		.map(Number);
+	const frequencyMap = calculateFrequency(arr);
+	const maxFrequency = Math.max(...frequencyMap.values());
+	return Array.from(frequencyMap.entries())
+		.filter(([_, freq]) => freq === maxFrequency)
+		.map(([num]) => num);
 }
 
 function getRange(arr: number[]): number {
@@ -43,14 +46,10 @@ function getRange(arr: number[]): number {
 
 function table(arr: number[]) {
 	validateData(arr);
+	const frequencyMap = calculateFrequency(arr);
 
-	const frequencyMap: Record<number, number> = {};
-	arr.forEach((num) => {
-		frequencyMap[num] = (frequencyMap[num] || 0) + 1;
-	});
-
-	const values = Object.keys(frequencyMap).map(Number);
-	const frequency = Object.values(frequencyMap);
+	const values = Array.from(frequencyMap.keys());
+	const frequency = Array.from(frequencyMap.values());
 	const fx = values.map((value, index) => value * frequency[index]);
 
 	return { values, frequency, fx };
