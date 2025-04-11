@@ -1,8 +1,15 @@
-export function add(a: number, b: number): number {
-  return a + b;
+interface TreeNode {
+	parent: TreeNode | null;
+	value: any;
+	children: [TreeNode, TreeNode];
 }
 
-// Learn more at https://docs.deno.com/runtime/manual/examples/module_metadata#concepts
-if (import.meta.main) {
-  console.log("Add 2 + 3 =", add(2, 3));
+class TreeNode {
+	constructor(value: any, parent: TreeNode | null = null) {
+		this.parent = parent;
+		this.value = value;
+	}
+	getValue() {
+		return [this.parent, this.value];
+	}
 }
