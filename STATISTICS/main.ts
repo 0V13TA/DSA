@@ -1,3 +1,4 @@
+//#region Statistics for ungrouped Data
 function validateData(arr: number[]): void {
 	if (arr.length === 0) throw new Error("Array must not be empty");
 	if (arr.some((value) => typeof value !== "number")) {
@@ -62,6 +63,9 @@ const numbArr = [
 	6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9,
 ];
 
+console.log("Statistics for ungrouped data");
+console.log("=============================");
+
 console.log(
 	`The mean of the collection is: ${getMean(numbArr).toPrecision(3)}`
 );
@@ -69,3 +73,120 @@ console.log(`The median of the collection is: ${getMedian(numbArr)}`);
 console.log(`The mode(s) of the collection is: ${getMode(numbArr).join(", ")}`);
 console.log(`The range of the collection is: ${getRange(numbArr)}`);
 console.table(table(numbArr));
+//#endregion
+
+//#region  Statistics for Grouped Data
+type arr = [number, number, number][];
+
+function getMeanGD(arr: arr) {
+	const HzM: number[] = [];
+	let HzSum = 0;
+	arr.forEach(([lB, UB, Hz]) => {
+		const midpoint = (lB + UB) / 2;
+		HzM.push(midpoint * Hz);
+		HzSum += Hz;
+	});
+
+	const HzMSum = HzM.reduce((acc, cur) => acc + cur, 0);
+
+	return HzMSum / HzSum;
+}
+
+function getModeGD(arr: arr) {
+	const modalClass = [
+		[0, 0, 0],
+		[0, 0, 0],
+		[0, 0, 0],
+	];
+
+	arr.forEach(([LB, UB, Hz], index) => {
+		if (Hz > modalClass[1][2]) {
+			if (index <= 0) modalClass[0] = [0, 0, 0];
+			else modalClass[0] = arr[index - 1];
+
+			modalClass[1] = [LB, UB, Hz];
+
+			if (index >= arr.length - 1) modalClass[2] = [0, 0, 0];
+			else modalClass[2] = arr[index + 1];
+		}
+	});
+
+	const lowerBound = (modalClass[1][0] + modalClass[0][1]) / 2;
+	const upperBound = (modalClass[1][1] + modalClass[2][0]) / 2;
+	const classSize = upperBound - lowerBound;
+	const HzM = modalClass[1][2];
+	const HzL = modalClass[0][2];
+	const HzU = modalClass[2][2];
+
+	return lowerBound + classSize * ((HzM - HzL) / (2 * HzM - HzL - HzU));
+}
+
+function getMedianGD(arr: arr): number {
+	const N = arr.reduce((sum, [, , Hz]) => sum + Hz, 0); // Total frequency
+	let cumulativeFrequency = 0;
+	let medianClassIndex = -1;
+
+	// Find the median class
+	for (let i = 0; i < arr.length; i++) {
+		cumulativeFrequency += arr[i][2];
+		if (cumulativeFrequency >= N / 2) {
+			medianClassIndex = i;
+			break;
+		}
+	}
+
+	if (medianClassIndex === -1) throw new Error("Median class not found");
+
+	const [LB, UB, f] = arr[medianClassIndex];
+	const F = cumulativeFrequency - f; // Cumulative frequency before the median class
+	const h = UB - LB; // Class width
+
+	return LB + ((N / 2 - F) / f) * h;
+}
+
+function getStandardDeviationGD(arr: arr): number {
+	const mean = getMeanGD(arr); // Mean of grouped data
+	const N = arr.reduce((sum, [, , Hz]) => sum + Hz, 0); // Total frequency
+
+	// Calculate Σ(f * (x - μ)^2)
+	const varianceSum = arr.reduce((sum, [lB, UB, Hz]) => {
+		const midpoint = (lB + UB) / 2;
+		return sum + Hz * Math.pow(midpoint - mean, 2);
+	}, 0);
+
+	return Math.sqrt(varianceSum / N); // Standard deviation
+}
+
+function groupedDataTable(arr: arr) {
+	const mean = getMeanGD(arr);
+	const mode = getModeGD(arr);
+	const median = getMedianGD(arr);
+	const standardDeviation = getStandardDeviationGD(arr);
+
+	console.table([
+		{ Statistic: "Mean", Value: mean },
+		{ Statistic: "Mode", Value: mode },
+		{ Statistic: "Median", Value: median },
+		{ Statistic: "Standard Deviation", Value: standardDeviation },
+	]);
+}
+
+const arrGD: arr = [
+	[40, 49, 3],
+	[50, 59, 5],
+	[60, 69, 6],
+	[70, 79, 9],
+	[80, 89, 8],
+	[90, 99, 7],
+];
+
+//#region Logs
+console.log("===========================");
+console.log("Statistics for grouped data");
+console.log("===========================");
+groupedDataTable(arrGD);
+console.log("===========================");
+
+//#endregion
+
+//#endregion
