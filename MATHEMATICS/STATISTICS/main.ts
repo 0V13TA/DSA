@@ -45,15 +45,18 @@ function getRange(arr: number[]): number {
 	return Math.max(...arr) - Math.min(...arr);
 }
 
-function table(arr: number[]) {
-	validateData(arr);
-	const frequencyMap = calculateFrequency(arr);
+function ungroupedTable(arr: number[]) {
+	const median = getMedian(arr);
+	const mean = getMean(arr);
+	const mode = getMode(arr);
+	const range = getRange(arr);
 
-	const values = Array.from(frequencyMap.keys());
-	const frequency = Array.from(frequencyMap.values());
-	const fx = values.map((value, index) => value * frequency[index]);
-
-	return { values, frequency, fx };
+	console.table([
+		{ Statistic: "mean", Value: mean },
+		{ Statistic: "median", Value: median },
+		{ Statistic: "mode", Value: mode },
+		{ Statistic: "range", Value: range },
+	]);
 }
 
 const numbArr = [
@@ -63,16 +66,10 @@ const numbArr = [
 	6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 8, 8, 8, 9, 9, 9, 9,
 ];
 
+console.log("=============================");
 console.log("Statistics for ungrouped data");
 console.log("=============================");
-
-console.log(
-	`The mean of the collection is: ${getMean(numbArr).toPrecision(3)}`
-);
-console.log(`The median of the collection is: ${getMedian(numbArr)}`);
-console.log(`The mode(s) of the collection is: ${getMode(numbArr).join(", ")}`);
-console.log(`The range of the collection is: ${getRange(numbArr)}`);
-console.table(table(numbArr));
+ungroupedTable(numbArr);
 //#endregion
 
 //#region  Statistics for Grouped Data
@@ -144,7 +141,7 @@ function getMedianGD(arr: arr): number {
 	return LB + ((N / 2 - F) / f) * h;
 }
 
-function getStandardDeviationGD(arr: arr): number {
+function getVariance(arr: arr): number {
 	const mean = getMeanGD(arr); // Mean of grouped data
 	const N = arr.reduce((sum, [, , Hz]) => sum + Hz, 0); // Total frequency
 
@@ -154,19 +151,25 @@ function getStandardDeviationGD(arr: arr): number {
 		return sum + Hz * Math.pow(midpoint - mean, 2);
 	}, 0);
 
-	return Math.sqrt(varianceSum / N); // Standard deviation
+	return varianceSum / N;
+}
+
+function getStandardDeviationGD(arr: arr): number {
+	return Math.sqrt(getVariance(arr)); // Standard deviation
 }
 
 function groupedDataTable(arr: arr) {
 	const mean = getMeanGD(arr);
 	const mode = getModeGD(arr);
 	const median = getMedianGD(arr);
+	const variance = getVariance(arr);
 	const standardDeviation = getStandardDeviationGD(arr);
 
 	console.table([
 		{ Statistic: "Mean", Value: mean },
-		{ Statistic: "Mode", Value: mode },
 		{ Statistic: "Median", Value: median },
+		{ Statistic: "Mode", Value: mode },
+		{ Statistic: "Variance", Value: variance },
 		{ Statistic: "Standard Deviation", Value: standardDeviation },
 	]);
 }
@@ -180,13 +183,9 @@ const arrGD: arr = [
 	[90, 99, 7],
 ];
 
-//#region Logs
 console.log("===========================");
 console.log("Statistics for grouped data");
 console.log("===========================");
 groupedDataTable(arrGD);
-console.log("===========================");
-
-//#endregion
 
 //#endregion
