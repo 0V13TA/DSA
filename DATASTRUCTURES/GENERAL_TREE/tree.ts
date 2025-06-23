@@ -18,25 +18,34 @@ export class Tree<T> {
   }
 
   public traverse(node: Node<T>, callback: (node: Node<T>) => void): void {
-    callback(node);
-    for (const child of node.getChildren()) {
-      this.traverse(child, callback);
+    const stack: Node<T>[] = [node];
+    while (stack.length > 0) {
+      const current = stack.pop()!;
+      callback(current);
+      // Add children in reverse to maintain order
+      for (let i = current.getChildren().length - 1; i >= 0; i--) {
+        stack.push(current.getChildren()[i]);
+      }
     }
   }
 
   public find(node: Node<T>, value: T): Node<T> | null {
-    if (node.getValue() === value) return node;
-
-    for (const child of node.getChildren()) {
-      const found = this.find(child, value);
-      if (found) return found;
+    const stack: Node<T>[] = [node];
+    while (stack.length > 0) {
+      const current = stack.pop()!;
+      if (current.getValue() === value) return current;
+      for (let i = current.getChildren().length - 1; i >= 0; i--) {
+        stack.push(current.getChildren()[i]);
+      }
     }
-
     return null;
   }
 
-  public toJson(): object {
-    return this.root.toJson();
+  public toJson(): { value: T; children: ReturnType<Node<T>["toJson"]>[] } {
+    return {
+      value: this.root.getValue(),
+      children: this.root.getChildren().map((child) => child.toJson())
+    };
   }
 
   public toString(): string {
