@@ -54,4 +54,48 @@ export class Tree<T> {
   public hasChildren(node: Node<T>): boolean {
     return node.hasChildren();
   }
+
+  public depthFirstSearch(callback: (node: Node<T>) => void): void {
+    this.traverse(this.root, callback);
+  }
+
+  public breadthFirstSearch(callback: (node: Node<T>) => void): void {
+    const queue: Node<T>[] = [this.root];
+    while (queue.length > 0) {
+      const currentNode = queue.shift()!;
+      callback(currentNode);
+      for (const child of currentNode.getChildren()) {
+        queue.push(child);
+      }
+    }
+  }
+
+  public reverseDepthFirstSearch(callback: (node: Node<T>) => void): void {
+    const stack: Node<T>[] = [this.root];
+    while (stack.length > 0) {
+      const currentNode = stack.pop()!;
+      callback(currentNode);
+      for (const child of currentNode.getChildren().reverse()) {
+        stack.push(child);
+      }
+    }
+  }
+
+  public reverseBreadthFirstSearch(callback: (node: Node<T>) => void): void {
+    const queue: Node<T>[] = [this.root];
+    const stack: Node<T>[] = [];
+
+    while (queue.length > 0) {
+      const currentNode = queue.shift()!;
+      stack.push(currentNode);
+      for (const child of currentNode.getChildren()) {
+        queue.push(child);
+      }
+    }
+
+    while (stack.length > 0) {
+      const node = stack.pop()!;
+      callback(node);
+    }
+  }
 }

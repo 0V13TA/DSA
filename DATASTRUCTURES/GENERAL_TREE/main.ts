@@ -34,3 +34,26 @@ console.log(tree.toString());
 // Print tree as JSON
 console.log("Tree as JSON:");
 console.log(JSON.stringify(tree.toJson(), null, 2));
+
+// Depth First Search
+console.log("Depth First Search");
+tree.depthFirstSearch((dan) => console.log(dan));
+
+// Test code
+console.log("Life");
+
+const tree1 = new Tree<string>("A");
+const root1 = tree1.getRoot();
+const nodeB1 = tree1.addChild(root1, "B");
+const nodeC1 = tree1.addChild(root1, "C");
+const _nodeD1 = tree1.addChild(root1, "D");
+tree1.addChild(nodeB1, "E");
+tree1.addChild(nodeB1, "F");
+tree1.addChild(nodeC1, "G");
+
+const values: string[] = [];
+tree1.reverseDepthFirstSearch((node: Node<string>) => {
+  values.push(node.getValue());
+});
+
+console.log(values);
