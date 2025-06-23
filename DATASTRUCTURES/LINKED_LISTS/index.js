@@ -14,7 +14,6 @@ class LinkedList {
 		this.tail = null;
 		this.size = 0;
 	}
-
 	// Add a new node to the end of the list
 	add(value) {
 		const newNode = new Node(value);

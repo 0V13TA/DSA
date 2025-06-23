@@ -23,6 +23,7 @@ export class Matrix {
     this.arr = array;
   }
 
+
   /**
    * Check if the matrix is square
    * @returns A boolean. True if the matrix is square, otherwise false.
@@ -535,5 +536,3 @@ const matrix2 = new Matrix([
 console.log(matrix1.getLeadingDiagonal());
 console.log(matrix1.getEntriesBelowLeadingDiagonal());
 console.log(matrix1.getEntriesAboveLeadingDiagonal());
-
-matrix1. 
