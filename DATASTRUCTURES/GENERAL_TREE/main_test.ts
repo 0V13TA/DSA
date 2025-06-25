@@ -277,3 +277,63 @@ Deno.test("Tree reverseBreadthFirstSearch", () => {
   // Expected order: G, F, E, D, C, B, A (reverse of BFS)
   assertEquals(values, ["G", "F", "E", "D", "C", "B", "A"]);
 });
+
+Deno.test("Node fromJson reconstructs the node and its children", () => {
+  const json = {
+    value: "Root",
+    children: [
+      {
+        value: "Child1",
+        children: [{ value: "Grandchild1", children: [] }]
+      },
+      {
+        value: "Child2",
+        children: []
+      }
+    ]
+  };
+
+  const node = new Node<string>("placeholder");
+  node.fromJson(json);
+
+  assertEquals(node.getValue(), "Root");
+  assertEquals(node.getChildren().length, 2);
+  assertEquals(node.getChildren()[0].getValue(), "Child1");
+  assertEquals(
+    node.getChildren()[0].getChildren()[0].getValue(),
+    "Grandchild1"
+  );
+  assertEquals(node.getChildren()[1].getValue(), "Child2");
+});
+
+Deno.test("Tree fromJson reconstructs the tree structure", () => {
+  const json = {
+    value: "A",
+    children: [
+      {
+        value: "B",
+        children: [
+          { value: "E", children: [] },
+          { value: "F", children: [] }
+        ]
+      },
+      {
+        value: "C",
+        children: [{ value: "G", children: [] }]
+      },
+      { value: "D", children: [] }
+    ]
+  };
+
+  const tree = new Tree<string>("placeholder");
+  tree.fromJson(json);
+
+  const root = tree.getRoot();
+  assertEquals(root.getValue(), "A");
+  assertEquals(root.getChildren().length, 3);
+  assertEquals(root.getChildren()[0].getValue(), "B");
+  assertEquals(root.getChildren()[0].getChildren()[0].getValue(), "E");
+  assertEquals(root.getChildren()[1].getValue(), "C");
+  assertEquals(root.getChildren()[1].getChildren()[0].getValue(), "G");
+  assertEquals(root.getChildren()[2].getValue(), "D");
+});

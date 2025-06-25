@@ -1,10 +1,13 @@
-import { Node } from "./node.ts";
+import { Node, type NodeJson } from "./node.ts";
 
 export class Tree<T> {
   private readonly root: Node<T>;
 
-  constructor(rootValue: T) {
+  constructor(rootValue: T, json?: NodeJson<T>) {
     this.root = new Node<T>(rootValue);
+    if (json) {
+      this.fromJson(json);
+    }
   }
 
   public getRoot(): Node<T> {
@@ -105,6 +108,18 @@ export class Tree<T> {
     while (stack.length > 0) {
       const node = stack.pop()!;
       callback(node);
+    }
+  }
+
+  public fromJson(value: NodeJson<T>) {
+    this.root.setValue(value.value);
+    this.root.clearChildren();
+    for (const child of value.children) {
+      const childNode = new Node<T>(child.value);
+      this.root.addChild(childNode);
+      if (child.children) {
+        childNode.fromJson(child);
+      }
     }
   }
 }

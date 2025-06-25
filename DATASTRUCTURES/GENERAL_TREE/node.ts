@@ -1,6 +1,11 @@
+export type NodeJson<T> = {
+  value: T;
+  children: NodeJson<T>[];
+};
+
 export class Node<T> {
   private readonly children: Node<T>[] = [];
-  private readonly value: T;
+  private value: T;
 
   constructor(value: T) {
     this.value = value;
@@ -16,6 +21,10 @@ export class Node<T> {
 
   public getValue(): T {
     return this.value;
+  }
+
+  public setValue(value: T): void {
+    this.value = value;
   }
 
   public hasChildren(): boolean {
@@ -44,5 +53,15 @@ export class Node<T> {
       value: this.value,
       children: this.children.map((child) => child.toJson())
     };
+  }
+
+  fromJson(child: NodeJson<T>): void {
+    this.setValue(child.value);
+    this.children.length = 0; // Clear existing children
+    for (const childData of child.children) {
+      const childNode = new Node<T>(childData.value);
+      childNode.fromJson(childData);
+      this.children.push(childNode);
+    }
   }
 }
