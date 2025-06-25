@@ -33,9 +33,7 @@ export class Node<T> {
 
   public removeChild(child: Node<T>): void {
     const index = this.children.indexOf(child);
-    if (index !== -1) {
-      this.children.splice(index, 1);
-    }
+    if (index !== -1) this.children.splice(index, 1);
   }
 
   public clearChildren(): void {

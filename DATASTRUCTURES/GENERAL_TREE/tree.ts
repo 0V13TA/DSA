@@ -5,9 +5,7 @@ export class Tree<T> {
 
   constructor(rootValue: T, json?: NodeJson<T>) {
     this.root = new Node<T>(rootValue);
-    if (json) {
-      this.fromJson(json);
-    }
+    if (json) this.fromJson(json);
   }
 
   public getRoot(): Node<T> {
@@ -26,9 +24,8 @@ export class Tree<T> {
       const current = stack.pop()!;
       callback(current);
       // Add children in reverse to maintain order
-      for (let i = current.getChildren().length - 1; i >= 0; i--) {
+      for (let i = current.getChildren().length - 1; i >= 0; i--)
         stack.push(current.getChildren()[i]);
-      }
     }
   }
 
@@ -37,9 +34,8 @@ export class Tree<T> {
     while (stack.length > 0) {
       const current = stack.pop()!;
       if (current.getValue() === value) return current;
-      for (let i = current.getChildren().length - 1; i >= 0; i--) {
+      for (let i = current.getChildren().length - 1; i >= 0; i--)
         stack.push(current.getChildren()[i]);
-      }
     }
     return null;
   }
@@ -76,9 +72,7 @@ export class Tree<T> {
     while (queue.length > 0) {
       const currentNode = queue.shift()!;
       callback(currentNode);
-      for (const child of currentNode.getChildren()) {
-        queue.push(child);
-      }
+      for (const child of currentNode.getChildren()) queue.push(child);
     }
   }
 
@@ -87,9 +81,8 @@ export class Tree<T> {
     while (stack.length > 0) {
       const currentNode = stack.pop()!;
       callback(currentNode);
-      for (const child of currentNode.getChildren().reverse()) {
+      for (const child of currentNode.getChildren().reverse())
         stack.push(child);
-      }
     }
   }
 
@@ -100,9 +93,7 @@ export class Tree<T> {
     while (queue.length > 0) {
       const currentNode = queue.shift()!;
       stack.push(currentNode);
-      for (const child of currentNode.getChildren()) {
-        queue.push(child);
-      }
+      for (const child of currentNode.getChildren()) queue.push(child);
     }
 
     while (stack.length > 0) {
@@ -117,9 +108,7 @@ export class Tree<T> {
     for (const child of value.children) {
       const childNode = new Node<T>(child.value);
       this.root.addChild(childNode);
-      if (child.children) {
-        childNode.fromJson(child);
-      }
+      if (child.children) childNode.fromJson(child);
     }
   }
 }
